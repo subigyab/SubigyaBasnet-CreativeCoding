@@ -1,3 +1,9 @@
+/**
+* Kevin's comments:  Nice work!  one thing I would say is in the future think about your variable names
+* and try to use names that are more descriptive and less generic than a-j.  If someone else is reading your code
+* you want to make it as easy as possible for them to read and understand what you're doing.
+* keep up the good work!
+*/
 var a = 170;
 var b = 100;
 var c = 100;
