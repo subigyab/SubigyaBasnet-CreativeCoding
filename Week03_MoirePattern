@@ -1,0 +1,108 @@
+//points for triangle
+var c=600;
+var d=300;
+var e=550;
+var f=350;
+var g=650;
+var h=350;
+
+//points for line1
+var pointE=500;
+var pointF=200;
+var pointG=550;
+var pointH=300;
+
+//points for line 2
+var pointI=350;
+var pointJ=300;
+var pointK=200;
+var pointL=500
+
+function setup() {
+  createCanvas(windowWidth,windowHeight);
+  for (var i=1;i<40;i++){
+    noFill();
+    beginShape(TRIANGLES);
+    vertex(c,d);
+    vertex(g,h);
+    vertex(e,f);
+    endShape();
+    
+    
+    d-=7;
+    g+=7;
+    h+=5;
+    e-=7;
+    f+=5;
+  
+    
+    beginShape(LINES);
+    vertex(pointE,pointF);
+    vertex(pointG,pointH);
+    endShape();
+    pointE+=5;
+    pointG+=5;
+    
+    beginShape(LINES);
+    vertex(pointI,pointJ);
+    vertex(pointK,pointL);
+    endShape();
+    pointI+=5;
+    pointK+=5;
+    
+  }
+  
+  c=600;
+  d=300;
+  e=550;
+  f=350;
+  g=650;
+  h=350;
+  
+  rotate(PI/3.0);
+  translate(-200,-600);
+  
+  for (var j=1;j<40;j++){
+    beginShape(TRIANGLES);
+    vertex(c,d);
+    vertex(g,h);
+    vertex(e,f);
+    endShape();
+    d-=7;
+    g+=7;
+    h+=5;
+    e-=7;
+    f+=5;
+  } 
+  
+  
+  c=600;
+  d=300;
+  e=550;
+  f=350;
+  g=650;
+  h=350;
+  
+  rotate(PI/2.0);
+  translate(-250,-1200);
+  
+  for (var k=1;k<40;k++){
+    beginShape(TRIANGLES);
+    vertex(c,d);
+    vertex(g,h);
+    vertex(e,f);
+    endShape();
+    d-=7;
+    g+=7;
+    h+=5;
+    e-=7;
+    f+=5;
+  } 
+  
+}
+
+
+
+function draw() {
+  
+}
