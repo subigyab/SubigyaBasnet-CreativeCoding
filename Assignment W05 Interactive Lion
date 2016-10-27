@@ -1,0 +1,138 @@
+var a=0;
+
+function setup() {
+  createCanvas(windowWidth,windowHeight);
+ 
+  
+}
+
+function draw() {
+  clear();
+  
+  
+  if(mouseIsPressed){
+  background(0);
+    
+    tiger(15,60);
+  }
+  else{
+  background(34,139,34);
+  tiger(0,0);
+  }
+}
+
+
+function tiger(a,b){
+  fill(210,82,29);
+  noStroke();
+  translate(mouseX-960,mouseY-540); 
+  ellipse(windowWidth/2,windowHeight/2,600,600);
+  
+  
+  //UpperFace Yellow
+  fill(254,193,77);
+  translate(0,-20);
+  beginShape();
+  vertex(820,485);
+  vertex(880,360);
+  vertex(960,380);
+  vertex(1040,360);
+  vertex(1100,485);
+  vertex(1070,580);
+  vertex(850,580);
+  endShape(CLOSE);  
+  //Lower Face White
+  fill(245);
+  beginShape();
+  vertex(850,580);
+  vertex(1070,580);
+  vertex(1045,605);
+  vertex(995,690);
+  vertex(925,690);
+  vertex(875,605);
+  endShape(CLOSE);
+  
+   //Eyes Right
+  fill(111,54,25);
+  beginShape();
+  vertex(1000,450);
+  vertex(1045,450);
+  vertex(1000,475-a);
+  endShape(CLOSE);
+  
+  //Eyes Left
+  beginShape();
+  vertex()
+  vertex(920,450);
+  vertex(920,475-a);
+  vertex(875,450);
+  endShape(CLOSE);
+  
+  //Upper Nose
+  fill(248,155,28);
+  beginShape();
+  vertex(880,360);
+  vertex(960,380);
+  vertex(1040,360);
+  vertex(1000,450);
+  vertex(1020,560);
+  vertex(960,575);
+  vertex(900,560);
+  vertex(920,450);
+  endShape(CLOSE);
+ 
+  //Lower Nose
+  fill(210,82,29);
+  beginShape();
+  vertex(900,560);
+  vertex(960,575);
+  vertex(1020,560);
+  vertex(960,610);
+  endShape(CLOSE);
+ 
+  //mouth
+  fill(145,99,47);
+  beginShape();
+  vertex(960,610);
+  vertex(900,655);
+  vertex(960,625+b);
+  vertex(1020,655);
+  endShape(CLOSE);
+ 
+ //moustache 
+  fill(255);
+  stroke(255);
+  beginShape(LINES);
+  vertex(925,610);
+  vertex(820,640);
+  vertex(995,610);
+  vertex(1100,640);
+  vertex(925,610);
+  vertex(810,625);
+  vertex(995,610);
+  vertex(1110,625);
+  vertex(925,610);
+  vertex(820,610);
+  vertex(995,610);
+  vertex(1110,610);
+  endShape();
+  
+  //rainbow mouth
+  if(mouseIsPressed){
+    noStroke();
+    fill(254,0,0);
+    rect(901,655,17,800);
+    fill(255,99,0);
+    rect(901+17,655,17,800);
+    fill(255,255,1);
+    rect(901+2*17,655,17,800);
+    fill(0,128,0);
+    rect(901+3*17,655,17,800);
+    fill(0,0,255);
+    rect(901+4*17,655,17,800);
+    fill(75,0,129);
+    rect(901+5*17,655,17,800);
+    fill(188,49,254);
+    rect(901+6*17,655,17,800);
+  }
+}
