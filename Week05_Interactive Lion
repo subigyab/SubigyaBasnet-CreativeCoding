@@ -1,3 +1,4 @@
+//Please use more descriptive variable names than single letters
 var a=0;
 
 function setup() {
@@ -21,7 +22,9 @@ function draw() {
   }
 }
 
-
+//please use more descriptive argument names than single letters
+//also, consider breaking up this long function into a few smaller functions that are more reusable.
+//for example, one of the parameters to these function should be the shapeColor or shapeBgColor
 function tiger(a,b){
   fill(210,82,29);
   noStroke();
