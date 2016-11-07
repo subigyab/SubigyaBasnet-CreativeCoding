@@ -1,0 +1,32 @@
+function setup(){
+  createCanvas(600,600);
+}
+function draw() {
+  background(200);
+  noStroke();
+  translate(width/2,height/2);
+  fill(0);
+  rotate(radians(frameCount %360));
+  from=color(255,50,0,90);
+  to=color(0,50,255,90);
+  Color1=lerpColor(from,to,0.66);
+  Color2=lerpColor(from,to,0.33);
+  
+  for(var i =0; i < 10; i++){
+    push();
+    //this means that we are dividing 360 degrees into
+    //8 portions
+    rotate(TWO_PI * i / 10);
+  	//scale(frameCount%3,frameCount%3);
+    //play around with the first parameter
+    if(i%2==1){
+    	fill(Color1);
+    }
+    else{
+      fill(Color2);
+    }
+    ellipse(frameCount % (width/2),0,200,200);
+    ellipse(frameCount % (width/2),300,300,300);
+    pop();
+  }
+}
