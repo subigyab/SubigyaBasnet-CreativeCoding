@@ -1,0 +1,126 @@
+var amplitude = 200;
+var angle=0;
+//sizeAmplitude=50;
+var particleVortex=[];
+var changeDir=1;
+var slider1;
+var slider2;
+var slider3;
+var slider4;
+var slider1Val;
+var slider2Val;
+var slider3Val;
+var slider4Val;
+//var addSpeed;
+
+function Particle(x,y,amp) {
+  this.speed   = random(0.1,1.5);
+  this.name    =  "astroid";
+  this.color=function(){
+      var slider1Val=slider1.value();
+      var slider2Val=slider2.value();
+      this.newColor= color(slider2Val,random(21,133),5,random(2,200));
+  } 
+  this.posX     = x;
+  this.posY= y;
+  this.angle=random(0,360);
+  this.size;
+  this.amplitude=amp;
+  this.sizeAmplitude=random(2,50);
+  this.newColor=color(255,random(21,133),random(2,200));
+  
+  
+  this.bounce=function(){
+    var slider3Val=slider3.value();
+    var slider4Val=slider4.value();
+    this.posY=sin(radians(this.angle)) * slider4Val*this.amplitude;
+    this.posX=cos(radians(this.angle)) *slider3Val*this.amplitude;
+    this.size=sin(radians(this.angle/2+135))*this.sizeAmplitude;
+    this.angle=this.angle+this.speed*changeDir;
+   }
+    
+  this.display=function(){
+    
+    ellipse(this.posX, this.posY,this.size,this.size);
+  }
+  
+}
+
+
+
+function setup() {
+  createCanvas(windowWidth,windowHeight);  
+  sliderLine1(); 
+  sliderLine2();
+  sliderLine3();
+  sliderLine4();
+  
+  for(var j=0;j<10;j++){
+  for(var i=0;i<300;i++){
+    particleVortex.push(new Particle(0,0,amplitude-i*8,addSpeed));
+  }
+  }  
+}
+
+function draw() {
+  background(0); 
+  
+  textSize(20);
+  textFont("Georgia");
+  fill(255,200,60);
+  text("No. of Particles: ",50,70);
+  text("Color of Particles: ",50,100);
+  text("Stretch System X: ",50,130);
+  text("Stretch System Y: ",50,160);
+  
+  var slider1Val=slider1.value();
+  var slider2Val=slider2.value();
+  var slider3Val=slider3.value();
+  var slider4Val=slider4.value();
+  
+  noStroke();  
+  translate(width/2,height/2);
+    
+  for(var i=0;i<slider1Val;i++){
+    particleVortex[i].color();
+    fill(particleVortex[i].newColor);
+    particleVortex[i].bounce();
+  	particleVortex[i].display();
+  } 
+  
+  print(slider2Val);
+  
+  }
+
+function sliderLine1(){
+  slider1=createSlider(0,3000,1000,5);
+  slider1.position(250,50);
+  slider1.style('width','90px');
+  
+}
+
+function sliderLine2(){
+  slider2=createSlider(0,255,0,10);
+  slider2.position(250,80);
+  slider2.style('width','90px');
+  
+}
+
+function sliderLine3(){
+  slider3=createSlider(-3,3,0.25,0.1);
+  slider3.position(250,110);
+  slider3.style('width','90px');
+  
+}
+
+function sliderLine4(){
+  slider4=createSlider(-3,3,1,0.1);
+  slider4.position(250,140);
+  slider4.style('width','90px');
+  
+}
+
+function mousePressed(){
+  changeDir=changeDir*(-1);
+  
+  }
