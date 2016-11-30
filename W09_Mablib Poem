@@ -1,0 +1,101 @@
+// var words=[];
+
+var lexicon;
+var poem=[];
+
+//variables for rhyming words
+var rDream=[];
+var rGloom=[];
+var rSlowly=[];
+var rFly=[];
+
+function preload(){
+  poem=loadStrings('assets/life.txt');
+}
+
+
+function setup(){
+  createCanvas(windowWidth,windowHeight);
+  textSize(20);
+  lexicon=new RiLexicon();
+  // text(poem,20,100,width-20,height);
+   generatePoem();
+
+  
+}
+
+function draw(){
+  push()
+  fill(255,0,0);
+  textSize(40);
+  textStyle(ITALIC);
+  textFont("Lato Light");
+ text("Click to find a new philosophy of life", 800,800);
+ pop();
+  
+}
+
+function mousePressed(){
+  clear();
+  generatePoemNew();
+}
+
+function generatePoem(){
+
+  var output="Life, believe, is not a dream"+"\n"+
+  "So dark as sages say;"+"\n"+
+  "Oft a little morning rain"+"\n"+
+  "Foretells a pleasant day."+"\n"+
+  "Sometimes there are clouds of gloom,"+"\n"+
+  "But these are transient all;"+"\n"+
+  "If the shower will make the roses bloom,"+"\n"+
+  "O why lament its fall?"+"\n"+
+  "Rapidly, merrily,"+"\n"+
+  "Life's sunny hours flit by,"+"\n"+
+  "Gratefully, cheerily,"+"\n"+
+  "Enjoy them as they fly!"
+  textAlign("CENTER")
+  textSize(40);
+  textFont("Georgia");
+  text("Life",300,100);
+  
+  textSize(20);
+  text(output,300,200);
+
+
+}
+
+function generatePoemNew(){
+
+  background(0);
+  lexicon=new RiLexicon();
+  rDream=lexicon.rhymes("dream");
+  rGloom=lexicon.rhymes("gloom");
+  rSlowly=lexicon.rhymes("slowly");
+  rFly=lexicon.rhymes("fly");
+
+  var output="Life, believe, is not a dream"+"\n"+
+  "So " + lexicon.randomWord("jj") + " as sages say;"+"\n"+
+  "Oft a little " + lexicon.randomWord("jj") +" "+rDream[round(random(0,(rDream.length-1)))] +"\n"+
+  "Foretells a "+lexicon.randomWord("jj") +" day."+"\n"+
+  "Sometimes there are "+lexicon.randomWord("nn") +" of gloom,"+"\n"+
+  "But these are "+lexicon.randomWord("jj") +" all;"+"\n"+
+  "If the "+lexicon.randomWord("nn") +" will make the roses " +rGloom[round(random(0,(rGloom.length-1)))]+","+"\n"+
+  "O why lament its fall?"+"\n"+
+  "Slowly, "+ rSlowly[round(random(0,(rSlowly.length-1)))] + ", \n"+
+  "Life's " + lexicon.randomWord("rb",1) + " hours flit by,"+"\n"+
+  lexicon.randomWord("rb",2)+", " +lexicon.randomWord("rb",2) +"\n"+
+  lexicon.randomWord("vb") + " them as they "+rFly[round(random(0,(rFly.length-1)))]+"!";
+  textAlign("CENTER")
+  fill(random(255),random(255),random(255));
+  textSize(40)
+  text("Life",300,100);
+  textSize(20);
+  textFont("Georgia");
+  text(output,300,200);
+
+
+}
+
+
+
