@@ -1,0 +1,94 @@
+var song;
+var volume;
+var rate;
+var pan;
+var playButton;
+var jumpButton;
+var songLen;
+var amp;
+var circ = [];
+
+function preload() {
+}
+
+
+function setup() {
+  createCanvas(800, 800);
+  song = loadSound("yellow.mp3", loaded);
+  background(0);
+  volume = createSlider(0, 1, 0.5, 0.05);
+  rate = createSlider(0, 2, 1, 0.05);
+  pan = createSlider(-1, 1, 0, 0.05);
+  playButton = createButton("Play");
+  playButton.mousePressed(togglePlaying);
+  jumpButton = createButton("Jump")
+  jumpButton.mousePressed(jumpPlaying);
+  // song.addCue(5,changeBackground);
+  amp = new p5.Amplitude();
+
+}
+
+function draw() {
+  background(0);
+  rectMode(CENTER);
+  frameRate(20);
+  song.setVolume(volume.value());
+  song.rate(rate.value());
+  song.pan(pan.value());
+  //background(0);
+  var vol = amp.getLevel();
+  var dia = map(vol, 0, 0.5, 50, 1600);
+  noFill();
+
+  circ.push(dia);
+  translate(width / 2, height / 2);
+  rotate(radians(frameCount));
+
+
+  for (var i = 0; i < circ.length; i++) {
+    strokeWeight(1);
+    fill(255, random(15,210), 0, 3)
+    stroke(255, random(15,210), 0, 75);
+    if(i%2===0){
+    rect(0, 0, circ[i], circ[i]);
+    }
+    else{
+      ellipse(0,0,circ[i]-50,circ[i]-50);
+    }
+  }
+  
+// push();
+// stroke(255);
+//   textSize(dia/1.5);
+//   textAlign(CENTER);
+//   text("Coldplay",0,0);
+//   pop();
+
+  if (frameCount > 15) {
+    circ.splice(0, 1);
+  }
+}
+
+function togglePlaying() {
+  if (!song.isPlaying()) {
+    song.play();
+    playButton.html("Pause");
+  } else {
+    song.pause();
+    playButton.html("Play");
+  }
+}
+
+function loaded() {
+  console.log("Loaded");
+
+}
+
+function jumpPlaying() {
+  songLen = song.duration();
+  song.jump(random(songLen));
+}
+
+function changeBackground() {
+  background(random(255), random(255), random(255));
+}
