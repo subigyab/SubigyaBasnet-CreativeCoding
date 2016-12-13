@@ -1,3 +1,8 @@
+/**
+* Kevin's comments:  nice work!  I'd really love to see movement in this sketch.  Consider translating or animating the
+* edges of your shapes to really exploit the Moire patterns.  Also, try to write longer/more descriptive variable names
+* that describe that variable's purpose in your drawing.
+**/
 //points for triangle
 var c=600;
 var d=300;
