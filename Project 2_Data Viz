@@ -1,0 +1,481 @@
+// sketch file
+
+
+var mainData;
+var currentData = [];
+var animateData = [];
+var currentType = 0;
+var currentYear = 0;
+var currentRadialData=[];
+var angleData=[];
+var hoverTune;
+var selectTune;
+var selectTuneCheck;
+var selectTuneCheck1;
+var selectTuneCheck2;
+var barHeight;
+var vizTypeCount = 1;
+
+
+function preload() {
+  mainData = loadTable("main data.csv", "csv", "header", function() {
+    console.log("Table Loaded");
+  })
+  hoverTune = loadSound("hover.wav");
+  selectTune = loadSound("select.wav");
+
+}
+
+function setup() {
+  createCanvas(1000, 600);
+
+  for (var i = 0; i < 5; i++) {
+    animateData.push(new AnimatedBar());
+  }
+
+
+
+}
+
+function draw() {
+  background(240);
+  layoutDesign();
+  if (vizTypeCount!=3){
+    ruler();
+  }
+
+  if (currentType === 0 || currentYear === 0) {
+    push();
+    fill(255);
+    rectMode(CENTER);
+    rect(width / 2 + 50, height / 2, 400, 75);
+    fill(150);
+    textSize(20);
+    noStroke();
+    text("SELECT DATA TYPE AND YEAR" + "\n" + "TO BEGIN", width / 2 + 50, height / 2);
+    pop();
+  } else if (vizTypeCount === 1) {
+    barGraph();
+  } else if (vizTypeCount === 2) {
+    lineChart();
+  } else if (vizTypeCount==3){
+    radialChart();
+  }
+
+}
+
+
+
+
+function ruler() {
+  push();
+  stroke(200);
+  noFill();
+  textAlign(CENTER);
+
+  //graph lines
+  beginShape();
+  vertex(250, 75);
+  vertex(250, 500);
+  vertex(900, 500);
+  endShape();
+
+  //xCoordinate Markings
+  noStroke();
+  fill(50);
+  text("Bronx", 315, 525);
+  text("Brooklyn", 445, 525);
+  text("Manhattan", 575, 525);
+  text("Queens", 705, 525);
+  text("Staten Island", 835, 525);
+
+
+  //yCoordinate Markings
+  stroke(200);
+  beginShape(LINES);
+  for (var i = 10; i <= 100; i += 10) {
+    vertex(245, 500 - 4 * i);
+    vertex(255, 500 - 4 * i);
+    push();
+    noStroke();
+    text(i + "%", 230, 500 - 4 * i);
+    pop();
+  }
+  endShape();
+
+  pop();
+}
+
+
+function barGraph() {
+  for (var k = 0; k < 5; k++) {
+    fill(170);
+    var currentSingleData = currentData[(currentYear - 2000 - 1) + k * 6] * 100
+    barHeight = map(currentSingleData, 0, 100, 0, 400);
+    animateData[k].update();
+
+    rect(270 + k * 130, 500, 90, -animateData[k].height);
+    fill(255);
+    noStroke();
+    text(round(animateData[k].pValue) + "%", 315 + k * 130, 500 - animateData[k].height / 2);
+
+  }
+
+}
+
+function AnimatedBar() {
+  this.height = 0;
+  this.speed = 1;
+  this.pValue = 0;
+
+  this.update = function() {
+    if (barHeight > this.height) {
+      this.height += this.speed;
+      this.pValue = map(this.height, 0, 400, 0, 100);
+
+    } else if (barHeight < this.height) {
+      this.height -= this.speed;
+      this.pValue = map(this.height, 0, 400, 0, 100);
+    }
+
+  }
+}
+
+function lineChart() {
+  push();
+  beginShape();
+  for (var k = 0; k < 5; k++) {
+    noFill();
+    stroke(100);
+    var currentSingleData = currentData[(currentYear - 2000 - 1) + k * 6] * 100
+    barHeight = map(currentSingleData, 0, 100, 0, 400);
+    animateData[k].update();
+    vertex(270 + k * 130 + 45, 500 - animateData[k].height);
+    push();
+    noStroke();
+    fill(100);
+    text(round(animateData[k].pValue) + "%", 315 + k * 130, 500 - animateData[k].height - 20);
+    rectMode(CENTER);
+    fill(255, 0, 0);
+    rect(270 + k * 130 + 45, 500 - animateData[k].height, 5, 5);
+    pop();
+  }
+  endShape();
+  pop();
+
+}
+
+function radialChart(){
+  // for(var i=0;i<5;i++){
+    push();
+    noFill();
+    // stroke(60,200,223);
+    stroke(225);
+    strokeWeight(10);
+    ellipse(width/2-50,height/2-100,150,150);
+    ellipse(width/2+150,height/2-100,150,150);
+    ellipse(width/2-150,height/2+100,150,150);
+    ellipse(width/2+50,height/2+100,150,150);
+    ellipse(width/2+250,height/2+100,150,150);
+    
+    
+    
+    for(var i=0;i<5;i++){
+      currentSingleData = round(currentData[(currentYear - 2000 - 1) + i * 6] * 100)
+      barHeight = map(currentSingleData, 0, 100, 0, 400);
+      angleData[i]=map(animateData[i].height,0,400,0,360);
+      animateData[i].update();
+    }
+     
+    stroke(60,200,223);
+    arc(width/2-50,height/2-100,150,150,radians(-90),radians(-90+angleData[0]));
+    arc(width/2+150,height/2-100,150,150,radians(-90),radians(-90+angleData[1]));
+    arc(width/2-150,height/2+100,150,150,radians(-90),radians(-90+angleData[2]));
+    arc(width/2+50,height/2+100,150,150,radians(-90),radians(-90+angleData[3]));
+    arc(width/2+250,height/2+100,150,150,radians(-90),radians(-90+angleData[4]));
+    
+    // animateData[i].update();
+    
+    
+    
+    radialChartText();
+    pop();
+  // }
+}
+
+function radialChartText(){
+  push();
+  noStroke();
+  fill(50);
+  text("Bronx", width/2-50, height/2);
+  text("Brooklyn", width/2+150, height/2);
+  text("Manhattan", width/2-150, height/2+200);
+  text("Queens", width/2+50, height/2+200);
+  text("Staten Island", width/2+250, height/2+200);
+  pop();
+  push();
+  textSize(60);
+  textFont("Bebas Neue");
+  noStroke();
+  fill(60,200,223);
+  text(round(animateData[0].pValue)+"%",width/2-50,height/2-100);
+  text(round(animateData[1].pValue)+"%",width/2+150,height/2-100);
+  text(round(animateData[2].pValue)+"%",width/2-150,height/2+100);
+  text(round(animateData[3].pValue)+"%",width/2+50,height/2+100);
+  text(round(animateData[4].pValue)+"%",width/2+250,height/2+100);
+  pop();
+}
+
+
+
+function storeCurrentData() {
+  if (currentType === 1) {
+    currentData = mainData.getColumn("Borough Total")
+    console.log("Borough Total Stored");
+    for (i = 0; i < currentData.length; i++) {
+      console.log(currentData[i]);
+    }
+
+  } else if (currentType === 2) {
+    currentData = mainData.getColumn("English Language Learners")
+    console.log("English Language Learners Stored");
+  } else if (currentType === 3) {
+    currentData = mainData.getColumn("English Proficient Students")
+    console.log("English Proficient Students Stored");
+  } else if (currentType === 4) {
+    currentData = mainData.getColumn("Special Education")
+    console.log(currentType + " Stored");
+  } else if (currentType === 5) {
+    currentData = mainData.getColumn("General Education")
+    console.log(currentType + " Stored");
+  } else if (currentType === 6) {
+    currentData = mainData.getColumn("Asian")
+    console.log(currentType + " Stored");
+  } else if (currentType === 7) {
+    currentData = mainData.getColumn("Black")
+    console.log(currentType + " Stored");
+  } else if (currentType === 8) {
+    currentData = mainData.getColumn("Hispanic")
+    console.log(currentType + " Stored");
+  } else if (currentType === 9) {
+    currentData = mainData.getColumn("White")
+    console.log(currentType + " Stored");
+  } else if (currentType === 10) {
+    currentData = mainData.getColumn("Female")
+    console.log(currentType + " Stored");
+  } else if (currentType === 11) {
+    currentData = mainData.getColumn("Male")
+    console.log(currentType + " Stored");
+  }
+
+}
+
+
+
+function mousePressed() {
+  for (var i = 1; i < 12; i++) {
+    if (mouseY > 30 + i * 45 && mouseY < 75 + i * 45) {
+      if (mouseX > 0 && mouseX < 150) {
+        currentType = i;
+        if (currentType !== selectTuneCheck) {
+          selectTune.play();
+          storeCurrentData();
+          selectTuneCheck = currentType;
+        }
+      }
+    }
+  }
+
+  for (var j = 1; j < 7; j++) {
+    if (mouseY > height - 45 && mouseY < height) {
+      if (mouseX > 225 + j * 100 && mouseX < 225 + (j + 1) * 100) {
+        currentYear = 2000 + j;
+        if (currentYear !== selectTuneCheck1) {
+          selectTune.play();
+          selectTuneCheck1 = currentYear;
+        }
+      }
+    }
+  }
+
+  for (var k = 0; k < 3; k++) {
+    if (mouseX > width - 100 && mouseX < width) {
+      if (mouseY > 50 + k * 45 && mouseY < 95 + k * 45) {
+        if (vizTypeCount !== k + 1) {
+          selectTune.play();
+          vizTypeCount = k+1;
+        }
+
+      }
+    }
+
+  }
+}
+
+
+//sketch layout
+
+var hoverTuneCheck;
+var hoverTuneCheck1;
+var hoverTuneCheck2;
+
+function layoutDesign() {
+  dataTypeColumn();
+  vizType();
+  mouseOverColumn();
+  categoriesSelect();
+  columnText();
+}
+
+function vizType() {
+  fill(175);
+  rect(width - 100, 50, 100, 45);
+  fill(200);
+  rect(width - 100, 95, 100, 45);
+  fill(225);
+  rect(width - 100, 140, 100, 45);
+}
+
+
+
+
+
+
+function categoriesSelect() {
+  if (currentType !== 0) {
+    fill(0, 200, 0);
+    rect(0, 30 + currentType * 45, 150, 45);
+  }
+  if (currentYear !== 0) {
+    fill(0, 200, 0);
+    rect(225 + (currentYear - 2000) * 100, height - 45, 100, 45);
+  }
+  if (vizTypeCount !== 0) {
+    fill(0, 200, 0);
+    rect(width - 100, 50 + 45 * (vizTypeCount - 1), 100, 45);
+  }
+
+}
+
+function dataTypeColumn() {
+  for (var i = 0; i < 12; i++) {
+    noStroke();
+    fill(88, 140 + i * 9, 255 - i * 5);
+    rect(0, 30 + i * 45, 150, 45);
+  }
+  for (var j = 0; j < 7; j++) {
+    noStroke();
+    fill(255, 244 - j * 22, 83 - 2 * j);
+    rect(225 + j * 100, height - 45, 100, 45);
+  }
+}
+
+function mouseOverColumn() {
+  for (var i = 1; i < 12; i++) {
+    if (mouseX > 0 && mouseX < 150) {
+
+      if (mouseY > 30 + i * 45 && mouseY < 75 + i * 45) {
+        fill(255);
+        rect(0, 30 + i * 45, 150, 45);
+        if (hoverTuneCheck != i && currentType != i) {
+          hoverTune.play();
+          hoverTuneCheck = i;
+        }
+      }
+    }
+  }
+
+  if (mouseX < 0 || mouseX > 150) {
+    hoverTuneCheck = -1;
+  }
+  if (mouseY < 30 || mouseY > 670) {
+    hoverTuneCheck = -1;
+  }
+
+
+
+
+
+  for (var j = 1; j < 7; j++) {
+    if (mouseY > height - 45 && mouseY < 600) {
+      if (mouseX > 225 + j * 100 && mouseX < 225 + (j + 1) * 100) {
+        fill(255);
+        rect(225 + j * 100, height - 45, 100, 45);
+        if (hoverTuneCheck1 != j && currentYear != 2000 + j) {
+          hoverTune.play();
+          hoverTuneCheck1 = j;
+        }
+      }
+    }
+  }
+
+  if (mouseX < 325 || mouseX > 925) {
+    hoverTuneCheck1 = -1;
+  }
+  if (mouseY < 555 || mouseY > 600) {
+    hoverTuneCheck1 = -1;
+  }
+
+  for (var k = 0; k < 3; k++) {
+    if (mouseX > width - 100 && mouseX < width) {
+      if (mouseY > 50+k*45 && mouseY < 95+k*45) {
+
+        fill(255);
+        rect(width - 100, 50+k*45, 100, 45);
+        
+        if (hoverTuneCheck2 != k && vizTypeCount != k+1) {
+          hoverTune.play();
+          hoverTuneCheck2 = k;
+        }
+
+      }
+    }
+  }
+  
+  if (mouseX < width - 100 || mouseX > width) {
+    hoverTuneCheck2 = -1;
+  }
+  if (mouseY < 50 || mouseY > 185) {
+    hoverTuneCheck2 = -1;
+  }
+
+
+}
+
+
+
+function columnText() {
+  fill(0);
+  textAlign(CENTER, CENTER);
+  push();
+  textSize(20);
+  textStyle(BOLD);
+  text("DATA TYPE", 75, 52.5);
+  pop();
+  text("BOROUGH TOTAL", 75, 97.5);
+  text("ENGLISH LANGUAGE" + "\n" + "LEARNERS", 75, 142.5);
+  text("ENGLISH PROFICIENT" + "\n" + "STUDENTS", 75, 187.5);
+  text("SPECIAL EDUCATION", 75, 232.5);
+  text("GENERAL EDUCATION", 75, 277.5);
+  text("ASIAN", 75, 322.5);
+  text("BLACK", 75, 367.5);
+  text("HISPANIC", 75, 412.5);
+  text("WHITE", 75, 457.5);
+  text("FEMALE", 75, 502.5);
+  text("MALE", 75, 547.5);
+  push();
+  textSize(20);
+  textStyle(BOLD);
+  text("YEAR", 275, 577.5);
+  pop();
+  text("2001", 375, 577.5);
+  text("2002", 475, 577.5);
+  text("2003", 575, 577.5);
+  text("2004", 675, 577.5);
+  text("2005", 775, 577.5);
+  text("2006", 875, 577.5);
+  text("BAR CHART", width - 50, 72.5);
+  text("LINE GRAPH", width - 50, 117.5);
+  text("RADIAL CHART", width - 50, 162.5);
+}
+
