@@ -1,0 +1,34 @@
+var data;
+var dataArray=[];
+var days=["","Monday","Tuesday","Wednesday","Thursday","Friday"]
+
+function preload(){
+  data=loadTable("Daily Data.csv","csv","header",function(){
+    console.log("Table Loaded");
+  })
+}
+
+
+function setup() {
+  createCanvas(windowWidth,windowHeight);
+  dataArray=data.getRow(0).arr;
+  noFill();
+  
+  textAlign(CENTER);
+  for(var i=0;i<dataArray.length;i++){
+    console.log
+    noFill();
+    stroke(0,62,250);
+    ellipse(100+150*i,height/2,dataArray[i]*20,dataArray[i]*20);
+    fill(0);
+    noStroke();
+    text(dataArray[i]+" hours",100+150*i,height/2);
+    text(days[i],100+150*i,height/2+100);
+  }
+  
+  
+}
+
+function draw() {
+  
+}""
